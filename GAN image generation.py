@@ -40,7 +40,7 @@ SEED_SIZE = 100
 
 # Configuration
 DATA_PATH = r"C:\Users\USER\.spyder-py3\insecurecow\cownew/train/"
-EPOCHS = 50
+EPOCHS = 1000
 BATCH_SIZE = 32
 BUFFER_SIZE = 60000
 
