@@ -1,8 +1,8 @@
-# insure-cow
+## Insure-cow
 Explanation for Insure-cow
 
 
-#Motivation:
+# Motivation:
 Animal identification is vital in in large group of animals 
 Individual identification allow management of 
 Stockbreeding programs 
@@ -19,7 +19,7 @@ Cattle identification has no available data sets of cattle’s
 Suitable feature extraction for the Machine Learning algorithms
 
 
-#Run our Code
+# Run our Code
 
 First gather masks using our GUI_interface.py and then run the following commands:
 
