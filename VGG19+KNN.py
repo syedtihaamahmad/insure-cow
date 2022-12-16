@@ -20,9 +20,10 @@ from keras.applications.vgg19 import VGG19
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 
+import shap
 #crack_2 = cv2.imread(r"C:\Users\USER\.spyder-py3\insecurecow\Prep2_Cropped_670_658/frame_0174-Crop2.jpg")
 #:\Users\USER\.spyder-py3\insecurecow\Prep2_Cropped_670_658\crack_new-train
-print(os.listdir(r"C:\Users\USER\.spyder-py3\insecurecow/cownew/"))
+
 
 
 #we check our input train and mask image thats why we choose the value
@@ -33,7 +34,7 @@ SIZE_Y = 220
 #Capture training image info as a list
 train_images = []
 
-for directory_path in glob.glob(r"C:\Users\USER\.spyder-py3\insecurecow\cownew/train/"):
+for directory_path in glob.glob(r"./train/"):
     for img_path in glob.glob(os.path.join(directory_path, "*.jpeg")):
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)       
         img = cv2.resize(img, (SIZE_Y, SIZE_X))
@@ -46,9 +47,12 @@ for directory_path in glob.glob(r"C:\Users\USER\.spyder-py3\insecurecow\cownew/t
 #Convert list to array for machine learning processing        
 train_images = np.array(train_images)
 
+x_expl_train=np.reshape(train_images,(3,SIZE_X,SIZE_Y,3))
+print(x_expl_train.shape)
+
 #Capture mask/label info as a list
 train_masks = [] 
-for directory_path in glob.glob(r"C:\Users\USER\.spyder-py3\insecurecow\cownew/mask/"):
+for directory_path in glob.glob(r"./mask/"):
     for mask_path in glob.glob(os.path.join(directory_path, "*.PNG")):
         mask = cv2.imread(mask_path, 0)       
         mask = cv2.resize(mask, (SIZE_Y, SIZE_X))
@@ -137,17 +141,18 @@ X =  dataset.drop(labels= ["Label"], axis=1)
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.4, random_state=20)
 
-# model = KNeighborsClassifier(n_neighbors=6)
-
+#model = KNeighborsClassifier(n_neighbors=6)
+print(X_test.shape)
+print(X_train.shape)
 
 #RANDOM FOREST
 from sklearn.ensemble import RandomForestClassifier
-model = RandomForestClassifier(n_estimators = 200, random_state = 42)
+model = RandomForestClassifier(n_estimators = 100, random_state = 42)
 
 
 
 # from sklearn.svm import LinearSVC
-# model = LinearSVC(max_iter=100)  #Default of 100 is not converging
+#model = LinearSVC(max_iter=10)  #Default of 100 is not converging
 
 
 # Train the model on training data
@@ -173,14 +178,26 @@ print ("Accuracy of testing data = ", metrics.accuracy_score(y_test, prediction_
 ####### End the part of Accuracy ###########
 
 #KNN classifier
-from sklearn.neighbors import KNeighborsClassifier
-model = KNeighborsClassifier(n_neighbors=6)
+#from sklearn.neighbors import KNeighborsClassifier
+#model = KNeighborsClassifier(n_neighbors=6)
 
 #RANDOM FOREST
-from sklearn.ensemble import RandomForestClassifier
-model = RandomForestClassifier(n_estimators = 200, random_state = 42)
+#from sklearn.ensemble import RandomForestClassifier
+#model = RandomForestClassifier(n_estimators = 200, random_state = 42)
 
+#x_expl_train=np.reshape(X_train,(64,SIZE_X,SIZE_Y,1))
+# select a set of background examples to take an expectation over
 
+background = x_expl_train
+
+# explain predictions of the model on four images
+e = shap.TreeExplainer(model)
+# ...or pass tensors directly
+# e = shap.DeepExplainer((model.layers[0].input, model.layers[-1].output), background)
+shap_values = e.shap_values(X_test[0])
+print(shap_values)
+shap.initjs()
+shap.force_plot(e.expected_value[1], shap_values[1], X_test[0],show=True)
 
 # from sklearn.svm import LinearSVC
 # model = LinearSVC(max_iter=100)  #Default of 100 is not converging
@@ -208,7 +225,7 @@ loaded_model = pickle.load(open(filename, 'rb'))
 
 #Test on a different image
 #READ EXTERNAL IMAGE...
-test_img = cv2.imread(r'C:\Users\USER\.spyder-py3\insecurecow\cownew/cow223.jpeg', cv2.IMREAD_COLOR)       
+test_img = cv2.imread(r'./train/cow222.jpeg', cv2.IMREAD_COLOR)       
 test_img = cv2.resize(test_img, (SIZE_Y, SIZE_X))
 test_img = cv2.cvtColor(test_img, cv2.COLOR_RGB2BGR)
 test_img = np.expand_dims(test_img, axis=0)
@@ -222,4 +239,4 @@ prediction = loaded_model.predict(X_test_feature)
 #View and Save segmented image
 prediction_image = prediction.reshape(mask.shape)
 plt.imshow(prediction_image, cmap='binary')
-plt.imsave(r'C:\Users\USER\.spyder-py3\insecurecow\cownew/cow_segmented_RF_another.jpg', prediction_image, cmap='gray')
+plt.imsave(r'cow_segmented_RF_another.jpg', prediction_image, cmap='gray')

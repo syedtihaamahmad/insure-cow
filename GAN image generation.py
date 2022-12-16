@@ -23,15 +23,15 @@ import matplotlib.pyplot as plt
 
 # from google.colab import drive
 # drive.mount('/content/drive')
-print(os.listdir(r"C:\Users\USER\.spyder-py3\insecurecow\cownew/train/"))
+print(os.listdir(r"./train_GAN/"))
 GENERATE_RES = 3 # Generation resolution factor 
 # (1=32, 2=64, 3=96, 4=128, etc.)
 GENERATE_SQUARE = 32 * GENERATE_RES # rows/cols (should be square)
 IMAGE_CHANNELS = 3
 
 # Preview image 
-PREVIEW_ROWS = 4
-PREVIEW_COLS = 7
+PREVIEW_ROWS = 1
+PREVIEW_COLS = 1
 PREVIEW_MARGIN = 16
 
 # Size vector to generate images from
@@ -39,9 +39,9 @@ SEED_SIZE = 100
 
 
 # Configuration
-DATA_PATH = r"C:\Users\USER\.spyder-py3\insecurecow\cownew/train/"
+DATA_PATH = r"./train_GAN/"
 EPOCHS = 1000
-BATCH_SIZE = 32
+BATCH_SIZE = 1
 BUFFER_SIZE = 60000
 
 print(f"Will generate {GENERATE_SQUARE}px square images.")
@@ -175,11 +175,13 @@ def save_images(cnt,noise):
         image_count += 1
 
           
-  output_path = os.path.join(DATA_PATH,'output')
+  output_path = os.path.join(DATA_PATH,'output_GAN')
+ 
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   
   filename = os.path.join(output_path,f"train-{cnt}.png")
+  print(filename)
   im = Image.fromarray(image_array)
   im.save(filename)
 
