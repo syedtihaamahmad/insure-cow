@@ -24,10 +24,10 @@ Suitable feature extraction for the Machine Learning algorithms
 First gather masks using our GUI_interface.py and then run the following commands:
 
 Increase the dataset using our GAN
-'''python GAN image generation"""
+```python GAN image generation```
 
 
 Run Ensemble model to get our SSIM and MSE and segmented images.
 
-'''python VGG19+KNN+ensemble"""
+```python VGG19+KNN+ensemble```
 
