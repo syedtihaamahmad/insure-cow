@@ -11,7 +11,7 @@ Cattle identification
 The real-time cattle recognition system provides an efficient way to stop the cattle manipulations
 it is tough to verify and recognize the registered insurance animals (owner of cattle) or impostor (non-insurance) animal
 Classic methods for cattle's are considered as scars and also vulnerable to manipulation
-#Problem statement:
+# Problem statement:
 Classical cattle identification and tracking methods performance is limited due to their vulnerability to losses, duplications, fraud, and security challenges.
 Investigation of bio and physical metrics that lead to best identification results (Example of these features are eyes, iris, face, weight) 
 Data Sets Collection 
