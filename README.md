@@ -1,5 +1,5 @@
 ## Insure-cow
-Explanation for Insure-cow
+Image segmentation and Explanation for Insure-cow
 
 
 # Motivation:
